@@ -1,0 +1,116 @@
+@charset "utf8";
+*{
+  font-size: 14px;
+}
+body{
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+#content{
+  margin-top: 50px;
+}
+#content{
+  margin-bottom: 30px;
+}
+#content #Main button{
+  width: 30%;
+  height: 10%;
+  border-radius: 10px;
+  background-color: rgb(246, 212, 19);
+  font-size: 1vw;
+}
+#img-1, #img-2, #img-1 div, #img-2 div{
+  margin: 0;
+  padding: 0;
+}
+#img-1 div, #img-2 div{
+  overflow: hidden;
+}
+#img-1 img, #img-2 img{
+  transform: scale(1, 1);
+  transition: all 1s ease-out;
+}
+#img-1 img:hover, #img-2 img:hover{
+  transform:scale(1.2, 1.2);
+}
+#Activate{
+  background-color: rgb(50, 48, 48);
+}
+#Activate p{
+  color: white;
+  margin-top: 10%;
+  margin-bottom: 5%;
+  font-size: 5rem;
+  font-weight: 900;
+}
+#Activate button{
+  width: 50%;
+  height: 15%;
+  margin-bottom: 10%;
+  font-size: 2rem;
+  transition: background-color 0.5s;
+}
+#Activate button:hover{
+  background-color: red;
+}
+#form{
+  background: linear-gradient(45deg, rgb(114, 111, 112), rgb(255, 251, 251));
+}
+#form #submit button{
+  margin-top: 15px;
+}
+#form #First_line{
+  margin-top: 5px;
+}
+@media (min-width: 1200px) {
+  #content #Main, #content .carousel{
+    padding: 10px;
+  }
+  #content #Main h3{
+    margin-top: 10%;
+  }
+  #content p{
+    margin-top: 10%;
+    margin-bottom: 10%;
+  }
+}
+@media (min-width: 768px){
+  #content{
+    text-align: center;
+  }
+  #content #Main, #content .carousel{
+    padding: 5px;
+  }
+  #content #Main h3{
+    font-size: 2rem;
+  }
+  p{
+    font-size: 1.2rem;
+  }
+  #content #Main h3{
+    margin-top: 10%;
+  }
+  #content p{
+    margin-top: 10%;
+    margin-bottom: 10%;
+  }
+}
+@media (max-width: 768px), (min-width: 0px){
+  #content #Main{
+    width: 80%;
+  }
+  #content #Main p{
+    margin-top: 2%;
+  }
+  #content #Main button{
+    margin-bottom: 5%;
+  }
+  #content .carousel{
+    width: 50%;
+  }
+  #content .carousel .carousel-inner .carousel-item .card-body p{
+    padding-right: 10%;
+    padding-left: 10%;
+  }
+}
