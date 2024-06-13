@@ -36,7 +36,7 @@ Go to https://www.apachefriends.org/zh_tw/download.html
 Go to C:/xampp, start xampp-control.exe.
 Click start let the apache and MySQL turn green.
 
-![image]([https://github.com/Yorkxe/Online-Notes/blob/main/Pics/environment%20variable3.PNG](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/Xampp-control-panel.PNG))
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/Xampp-control-panel.PNG)
 
 Open your Web browser, type in localhost/PHPmyadmin
 ![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/PHPmyadmin.PNG)
