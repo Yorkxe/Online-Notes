@@ -41,3 +41,34 @@ Click start let the apache and MySQL turn green.
 Open your Web browser, type in localhost/PHPmyadmin
 ![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/PHPmyadmin.PNG)
 
+Create a database named notes and note、note_history、user、user_history datatable.
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/sub%20database.PNG)
+
+Setting the datatable below.
+### note
+
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/note.png)
+
+### note_history
+
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/note_history.PNG)
+
+### user
+
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/user.PNG)
+
+### user_history
+
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/user_history.PNG)
+
+## Setting password for MySQL
+Go to localhost/phpmyadmin.
+Click the user account, and click the create new user account.
+
+Go to Xampp control panel, click phpMyAdmin.
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/Setting%20phpmyadmin.png)
+
+Find $cfg['Servers'][$i]['AllowNoPassword'] = True, and change it to False.
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/Setting%20for%20password.PNG)
+
+It's better to set a user to enter database, because many data is restored in it.
