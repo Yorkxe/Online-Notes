@@ -24,6 +24,7 @@ Go to environment variable.
 
 
 Select Path, and click edit.
+
 ![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/environment%20variable2.PNG)
 
 
@@ -72,3 +73,18 @@ Find $cfg['Servers'][$i]['AllowNoPassword'] = True, and change it to False.
 ![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/Setting%20for%20password.PNG)
 
 It's better to set a user to enter database, because many data is restored in it.
+## How to use
+Start your xampp and click the start button next to Apache and MySQL.
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/Xampp-control-panel.PNG)
+
+Download the all files in this project, and put it into C:/xampp/htdocs.
+Open your web borwser, and enter localhost.
+It'll go to the index.php directly.
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/index.PNG)
+
+You can register a new user account.
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/register.PNG)
+
+Login the Online-notes, there you have it.
+You can enjoy creating your own notes!!
+![image](https://github.com/Yorkxe/Online-Notes/blob/main/Pics/welcome.PNG)
