@@ -44,4 +44,17 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    //relationship between User & Notes
+    public function Notes(){
+        return $this->hasMany(Notes::class)->orderBy('created_at', 'DESC');
+    }
+
+    //relationship between User & User_History
+    public function User_History(){
+        return $this->hasMany(User_History::class)->orderBy('created_at', 'DESC');
+    }
+
+    public function Notes_History(){
+        return $this->hasMany(Notes_History::class)->orderBy('created_at', 'DESC');
+    }
 }
