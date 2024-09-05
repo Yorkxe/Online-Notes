@@ -135,8 +135,6 @@ class NotesController extends Controller
         //fopen is a resources type, can't pass to view
         $Content = file_get_contents($path);
         
-        $Notes = Notes::find($Notes);
-
         return view('Notes.edit', [
             'Notes' => $Notes,
             'Content' => $Content
