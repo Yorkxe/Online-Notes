@@ -26,3 +26,11 @@ Route::resource('Notes', NotesController::class)->middleware('auth');
 //     Route::put('/Notes/{Notes}/edit', 'edit')->middleware('auth');
 //     Route::get('/Notes/create', 'create')->middleware('auth');
 // });
+
+// Route [Notes.index] not defined.
+// Route::resource('Notes', 'NotesController', [
+//     'except' => [
+//         'index',
+//         'show'
+//     ]
+// ])->middleware(['web', 'auth']);
