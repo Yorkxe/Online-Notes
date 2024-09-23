@@ -32,7 +32,17 @@ new #[Layout('layouts.guest')] class extends Component
 
         Auth::login($user);
 
-        $this->redirect(route('index', absolute: false), navigate: true);
+        Auth()->User()->User_History()->create([
+            'Move' => 'Register',
+            'Notes_id' => 0
+        ]);
+
+        Auth()->User()->User_History()->create([
+            'Move' => 'Login',
+            'Notes_id' => 0
+        ]);
+
+        $this->redirect(route('Profile.show', ['user' => $user], absolute: false), navigate: true);
     }
 }; ?>
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Notes;
 use App\Http\Requests\StoreNotesRequest;
 use App\Http\Requests\UpdateNotesRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,6 +27,11 @@ class NotesController extends Controller
      */
     public function create()
     {
+        if(Auth::User()->authority > 2){
+            return redirect()->route('Notes.index',
+            ['Notes' =>Notes::latest()->where('Hide', '=', 0)->paginate(10)])
+            ->withErrors(['error' => 'You have no access to create Notes']);
+        }
         return view('Notes.create');
     }
 
@@ -36,21 +43,33 @@ class NotesController extends Controller
         //get the Subject & Content
         $data = request()->validate([
             'Subject' => 'required',
-            'Content' => 'required'
+            'Content' => 'required',
+            'Image' => 'image|mimes:jpeg,jpg,png,gif',
         ]);
-        // dd($data);
+
         //get the latest id from database
         $id = DB::table('notes')->max('id');
         $id++;
         $filename = $id.'.txt';
-        
-        //store the txt file into public
-        Storage::disk('public/Notes')->put($filename, $data['Content']);        
-        
-        //store Subject into database
-        Auth()->User()->Notes()->create([
-            'Subject' => $data['Subject'],
-        ]);
+
+        //store the txt file and Notes_Image into public
+        Storage::disk('public/Notes')->put($filename, $data['Content']);
+
+        if(isset($data['Image'])){
+            $Image = request('Image')->store('Notes_Image', 'public');
+
+            Auth()->User()->Notes()->create([
+                'Subject' => $data['Subject'],
+                'Image' => $Image
+            ]);
+        }else{
+            Auth()->User()->Notes()->create([
+                'Subject' => $data['Subject'],
+                //if the user didn't import a image, take the default.png
+                'Image' => 'default.png'
+            ]);
+
+        }
 
         Auth()->User()->Notes_History()->create([
             'Notes_id' => $id,
@@ -58,7 +77,8 @@ class NotesController extends Controller
         ]);
 
         Auth()->User()->User_History()->create([
-            'Move' => 'Create'
+            'Move' => 'Create_Notes',
+            'Notes_id' => $id
         ]);
 
         return redirect()->route('Notes.index')->withSuccess('New Notes is added successfully!!');
@@ -81,38 +101,40 @@ class NotesController extends Controller
         $Content = file_get_contents($path);
 
         if((Auth()->User()) != null){
-            Auth()->User()->Notes()->update([
+            Auth()->User()->Notes()->where('id', '=', $id)->update([
                 'Views' => $Views
             ]);
 
             Auth()->User()->Notes_History()->create([
-                'Notes_id' => $Notes,
-                'Move' => 'Show'
+                'Notes_id' => $id,
+                'Move' => 'Read'
             ]);
     
             Auth()->User()->User_History()->create([
-                'Move' => 'Show'
+                'Move' => 'Read_Notes',
+                'Notes_id' => $id
             ]);
         }else{
             //because we didn't login, so can't use Auth()->User()            
             DB::transaction(function () use($id, $Views) {
 
-                DB::table('Notes')->
+                DB::table('Notes')->where('Hide', '=', 0)->
                 update([
                     'Views' => $Views
                 ]);
                 
                 DB::table('Notes_History')->
                 insert([
-                    'user_id' => '0',
+                    'user_id' => 0,
                     'Notes_id' => $id,
-                    'Move' => 'Show'
+                    'Move' => 'Read'
                 ]);
     
                 DB::table('User_History')->
                 insert([
                     'user_id' => '0',
-                    'Move' => 'Show'
+                    'Move' => 'Read_Notes',
+                    'Notes_id' => $id
                 ]);
             });
         }
@@ -131,13 +153,24 @@ class NotesController extends Controller
         $Notes = Notes::findOrFail($Notes);
         $id = $Notes->id;
 
-        $path = 'C:\xampp\htdocs\Online-Notes\storage\app\public\Notes\\'.$id.'.txt';
+        if(Auth::User() != $id){
+            return redirect()->route('Notes.index',
+            ['Notes' =>Notes::latest()->where('Hide', '=', 0)->paginate(10)])
+            ->withErrors(['error' => 'You have no access to edit other\'s Note']);
+        }
+
+        $Image = $Notes->Image;
+
+        $path_Notes = 'C:\xampp\htdocs\Online-Notes\storage\app\public\Notes\\'.$id.'.txt';
         //fopen is a resources type, can't pass to view
-        $Content = file_get_contents($path);
+        $Content = file_get_contents($path_Notes);
         
+        $path_Image = 'C:\xampp\htdocs\Online-Notes\storage\app\public\Notes_Image\\'.$Image;
+
         return view('Notes.edit', [
             'Notes' => $Notes,
-            'Content' => $Content
+            'Content' => $Content,
+            'Image' => $path_Image
         ]);
     }
 
@@ -149,14 +182,23 @@ class NotesController extends Controller
         $id = $request['id'];
         $Subject = $request['Subject'];
         $Content = $request['Content'];
-        
+
         $path = 'C:\xampp\htdocs\Online-Notes\storage\app\public\Notes\\'.$id.'.txt';
         $file = fopen($path, 'r+');
         fwrite($file, $Content);
 
-        Auth()->User()->Notes()->where('id', '=' , $id)->update([
-            'Subject' => $Subject,
-        ]);
+        if( isset($request['Image']) ){
+            $Image = request('Image')->store('Notes_Image', 'public');
+
+            Auth()->User()->Notes()->where('id', '=' , $id)->update([
+                'Subject' => $Subject,
+                'Image' => $Image
+            ]);    
+        }else{
+            Auth()->User()->Notes()->where('id', '=' , $id)->update([
+                'Subject' => $Subject,
+            ]);    
+        }
 
         Auth()->User()->Notes_History()->create([
             'Notes_id' => $id,
@@ -164,7 +206,8 @@ class NotesController extends Controller
         ]);
 
         Auth()->User()->User_History()->create([
-            'Move' => 'Update'
+            'Move' => 'Update_Notes',
+            'Notes_id' => $id
         ]);
 
         return redirect()->route('Notes.index')->withSuccess('Notes is updated successfully!!');
@@ -176,18 +219,26 @@ class NotesController extends Controller
     public function destroy($Notes)
     {
         $Notes = Notes::find($Notes);
+        $id  = $Notes->id;
 
-        Auth()->User()->Notes()->where('id', '=', $Notes->id)->update([
+        if(Auth::User() != $Notes->user_id){
+            return redirect()->route('Notes.index',
+            ['Notes' =>Notes::latest()->where('Hide', '=', 0)->paginate(10)])
+            ->withErrors(['error' => 'You have no access to delete other\'s Notes']);
+        }
+
+        Auth()->User()->Notes()->where('id', '=', $id)->update([
             'Hide' => 1,
         ]);
 
         Auth()->User()->Notes_History()->create([
-            'Notes_id' => $Notes->id,
+            'Notes_id' => $id,
             'Move' => 'Delete'
         ]);
 
         Auth()->User()->User_History()->create([
-            'Move' => 'Delete'
+            'Move' => 'Delete_Notes',
+            'Notes_id' => $id
         ]);
 
         return redirect()->back()->withSuccess('Notes is deleted successfully!!');

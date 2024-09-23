@@ -23,7 +23,9 @@ class UpdateNotesRequest extends FormRequest
     {
         return [
             'Subject' => 'required',
-            'Content' => 'required'
+            'Content' => 'required',
+            'Description' => 'nullable',
+            'Image' => 'image|mimes:jpeg,jpg,png,gif',
         ];
     }
 }

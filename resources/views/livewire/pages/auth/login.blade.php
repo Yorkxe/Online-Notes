@@ -20,7 +20,12 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('index', absolute: false), navigate: true);
+        Auth()->User()->User_History()->create([
+            'Move' => 'Login',
+            'Notes_id' => 0
+        ]);
+
+        $this->redirectIntended(default: route('Profile.show', ['user' => Auth()->User()->id], absolute: false), navigate: true);
     }
 }; ?>
 

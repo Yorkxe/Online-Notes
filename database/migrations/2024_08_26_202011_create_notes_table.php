@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('Subject');
+            $table->string('Image');
             $table->boolean('Hide');
             $table->integer('Views');
             $table->timestamps();

@@ -12,6 +12,11 @@ class Logout
      */
     public function __invoke(): void
     {
+        Auth()->User()->User_History()->create([
+            'Move' => 'Logout',
+            'Notes_id' => 0
+        ]);
+
         Auth::guard('web')->logout();
 
         Session::invalidate();

@@ -11,6 +11,7 @@ class User_History extends Model
 
     protected $fillable = [
         'user_id',
+        'Notes_id',
         'Move',
         'Created_at',
         'Updated_at'

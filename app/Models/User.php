@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'authority'
     ];
 
     /**
@@ -56,5 +57,21 @@ class User extends Authenticatable
 
     public function Notes_History(){
         return $this->hasMany(Notes_History::class)->orderBy('created_at', 'DESC');
+    }
+
+    //When creating a new user, the Profile model will be created simultaneously
+    protected static function boot(){
+        parent::boot();
+
+        static::created(function (User $user){
+            $user->Profile()->create([
+                'Description' => 'Write sth you want to tell everyone',
+                'Image' => 'default.png'
+            ]); 
+        });
+    }
+
+    public function Profile(){
+        return $this->hasOne(Profile::class);
     }
 }

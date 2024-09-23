@@ -2,6 +2,7 @@
 
 use App\Livewire\Actions\Logout;
 use Livewire\Volt\Component;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component
 {
@@ -24,7 +25,7 @@ new class extends Component
             <div class="flex">
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('index')" :active="request()->routeIs('index')" wire:navigate>
+                    <x-nav-link :href="route('Profile.show', auth()->user()->id)" :active="request()->routeIs('Profile.show', auth()->user()->id)" wire:navigate>
                         {{ __('Home') }}
                     </x-nav-link>
                 </div>
@@ -33,6 +34,13 @@ new class extends Component
                         {{ __('Notes') }}
                     </x-nav-link>
                 </div>
+                @if(Auth::User()->authority == 1)
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('Admin')" :active="request()->routeIs('Admin')" wire:navigate>
+                        {{ __('Admin') }}
+                    </x-nav-link>
+                </div>
+                @endif
             </div>
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -50,8 +58,8 @@ new class extends Component
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile')" wire:navigate>
-                            {{ __('Profile') }}
+                        <x-dropdown-link :href="route('Profile.edit', auth()->user()->id)" wire:navigate>
+                            {{ __('Edit_Profile') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -99,13 +107,18 @@ new class extends Component
     @auth
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')" wire:navigate>
+            <x-responsive-nav-link :href="route('Profile.show', auth()->user()->id)" :active="request()->routeIs('Profile.show', auth()->user()->id)" wire:navigate>
                 {{ __('Home') }}
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('Notes.index')" :active="request()->routeIs('Notes.index')" wire:navigate>
                 {{ __('Notes') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('Notes.index')" :active="request()->routeIs('Admin')" wire:navigate>
+                {{ __('Admin') }}
             </x-responsive-nav-link>
         </div>
 
@@ -115,12 +128,7 @@ new class extends Component
                 <div class="font-medium text-base text-gray-800" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
                 <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
             </div>
-
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile')" wire:navigate>
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
                 <!-- Authentication -->
                 <button wire:click="logout" class="w-full text-start">
                     <x-responsive-nav-link>

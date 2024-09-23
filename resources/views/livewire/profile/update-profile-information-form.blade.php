@@ -5,34 +5,51 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Livewire\Volt\Component;
+use Livewire\WithFileUploads;
 
 new class extends Component
 {
+    //for Image upload
+    use WithFileUploads;
+
     public string $name = '';
     public string $email = '';
-
+    public string $Description = '';
+    public $Image;
     /**
      * Mount the component.
      */
+    
     public function mount(): void
     {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
+        $this->Description = Auth()->User()->Profile->Description;
     }
 
     /**
      * Update the profile information for the currently authenticated user.
      */
-    public function updateProfileInformation(): void
-    {
+    public function updateProfileInformation(){
         $user = Auth::user();
 
-        $validated = $this->validate([
+        $info_user = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
         ]);
 
-        $user->fill($validated);
+        if(!is_null($this->Image)){
+            $info_Profile = $this->validate([
+                'Description' => ['string', 'max:255'],
+                'Image' => ['image', 'mimes:jpeg,jpg,png,gif', 'max:1024'],
+            ]);
+        }else{
+            $info_Profile = $this->validate([
+                'Description' => ['string', 'max:255'],
+            ]);
+        }
+
+        $user->fill($info_user);
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
@@ -40,7 +57,26 @@ new class extends Component
 
         $user->save();
 
+        $this->Image->storeAs(path:'public\Profiles', name: $user->id.'_'.date("Ymd", time()).'.jpg');
+
+        if(!is_null($this->Image)){
+            Auth()->User()->Profile()->update([
+                'Description' => $info_Profile['Description'],
+                'Image' => $user->id.'_'.date("Ymd", time()).'.jpg'
+            ]);    
+        }else{
+            Auth()->User()->Profile()->update([
+                'Description' => $info_Profile['Description'],
+            ]);    
+        }
+
+        Auth()->User()->User_History()->create([
+            'Move' => 'Update_Profiles',
+            'Notes_id' => 0
+        ]);
+
         $this->dispatch('profile-updated', name: $user->name);
+        return redirect()->route('Profile.show', [$user]);
     }
 
     /**
@@ -51,7 +87,7 @@ new class extends Component
         $user = Auth::user();
 
         if ($user->hasVerifiedEmail()) {
-            $this->redirectIntended(default: route('dashboard', absolute: false));
+            $this->redirectIntended(default: route(['Profile.show', $user], absolute: false));
 
             return;
         }
@@ -73,9 +109,9 @@ new class extends Component
         </p>
     </header>
 
-    <form wire:submit="updateProfileInformation" class="mt-6 space-y-6">
+    <form wire:submit="updateProfileInformation" class="mt-6 space-y-6" enctype="multipart/form-data">
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('name')" />
             <x-text-input wire:model="name" id="name" name="name" type="text" class="mt-1 block w-full" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
@@ -102,6 +138,18 @@ new class extends Component
                     @endif
                 </div>
             @endif
+        </div>
+
+        <div>
+            <x-input-label for="Description" :value="__('Description')" />
+            <x-text-input wire:model="Description" id="Description" name="Description" type="text" class="mt-1 block w-full" autofocus autocomplete="Description" />
+            <x-input-error class="mt-2" :messages="$errors->get('Description')" />
+        </div>
+
+        <div>
+            <x-input-label for="Image" :value="__('Image')" />
+            <x-text-input wire:model="Image" id="Image" name="Image" type="file" class="mt-1 block w-full" accept="image/*"/>
+            <x-input-error class="mt-2" :messages="$errors->get('Image')" />
         </div>
 
         <div class="flex items-center gap-4">

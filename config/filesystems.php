@@ -41,13 +41,21 @@ return [
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
-            'throw' => false,
+            'throw' => true,
         ],
 
         //setting the filepath to store the Notes
         'public/Notes' => [
             'driver' => 'local',
             'root' => storage_path('app/public/Notes'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        
+        'public/Notes_Image' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/Notes_Image'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,

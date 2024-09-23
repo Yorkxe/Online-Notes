@@ -6,10 +6,14 @@
                     class="inline-flex items-center px-4 py-2 mb-4 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 active:bg-green-700 focus:outline-none focus:border-green-700 focus:shadow-outline-gray disabled:opacity-25">
                     <- Go back
                 </a>
-                <form action="{{ route('Notes.update', $Notes->id) }}" method="POST">
+                <form action="{{ route('Notes.update', $Notes->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="id" value="{{ $Notes->id }}">
+                    <div>
+                        <img src="{{ $Image }}">
+                        <input type="file" id="Image" name="Image" accept="image/*">
+                    </div>
                     <div class="mb-4">
                         <label for="textSubject"
                             class="block mb-2 text-sm font-bold text-gray-700">Subject</label>

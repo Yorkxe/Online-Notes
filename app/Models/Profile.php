@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notes extends Model
+class Profile extends Model
 {
     use HasFactory;
-
+    
     protected $fillable = [
         'user_id',
-        'Subject',
+        'Description',
         'Image',
         'Created_at',
         'Updated_at'
@@ -20,9 +20,4 @@ class Notes extends Model
     public function User(){
         return $this->belongsTo(User::class);
     }
-
-    public function Notes_History(){
-        return $this->hasMany(Notes::class);
-    }
-
 }

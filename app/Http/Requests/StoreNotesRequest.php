@@ -23,7 +23,8 @@ class StoreNotesRequest extends FormRequest
     {
         return [
             'Subject' => 'required',
-            'Content' => 'required'
+            'Content' => 'required',
+            'Image' => 'image|mimes:jpeg,jpg,png,gif'
         ];
     }
 }
