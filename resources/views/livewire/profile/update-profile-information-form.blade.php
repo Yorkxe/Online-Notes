@@ -57,13 +57,13 @@ new class extends Component
 
         $user->save();
 
-        $this->Image->storeAs(path:'public\Profiles', name: $user->id.'_'.date("Ymd", time()).'.jpg');
-
         if(!is_null($this->Image)){
             Auth()->User()->Profile()->update([
                 'Description' => $info_Profile['Description'],
                 'Image' => $user->id.'_'.date("Ymd", time()).'.jpg'
-            ]);    
+            ]);
+
+            $this->Image->storeAs(path:'public\Profiles', name: $user->id.'_'.date("Ymd", time()).'.jpg');    
         }else{
             Auth()->User()->Profile()->update([
                 'Description' => $info_Profile['Description'],
@@ -76,7 +76,7 @@ new class extends Component
         ]);
 
         $this->dispatch('profile-updated', name: $user->name);
-        return redirect()->route('Profile.show', [$user]);
+        return redirect()->route('Profile.show', [$user])->with('success' , 'Edit Profile Successfully!!');
     }
 
     /**

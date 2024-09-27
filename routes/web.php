@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotesController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AdminController;
 
 Route::view('/', 'welcome');
 
@@ -18,15 +18,8 @@ require __DIR__.'/auth.php';
 
 Route::resource('Notes', NotesController::class)->middleware('auth');
 
-Route::middleware('auth')->get('Admin', function(){
-    if(Auth::User()->authority != 1){
-        return redirect()->route('Profile.show', [
-            'user' => Auth()->User()->id,
-        ])->withErrors(['error' => 'You have no access to see this page']); 
-    }else{
-        return view('Admin');
-    }
-})->name('Admin');
+Route::get('/Admin', [AdminController::class, 'show'])->middleware('auth')->name('Admin');
+
 //The GET method is not supported for route Notes. Supported methods: POST.
 // Route::resource('Notes', NotesController::class)->middleware('auth')->except(['index', 'show']);
 

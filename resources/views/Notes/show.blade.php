@@ -7,33 +7,30 @@
                     <- Go back
                 </a>
                 <table class="w-full table-fixed">
-                    <tbody>
-                        <tr>
-                            <td class="px-4 py-2 font-bold">Creator</td>
-                            <td>{{ $Notes->User->name }}</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 font-bold">Subject</td>
-                            <td>{{ $Notes->Subject }}</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 font-bold">Views</td>
-                            <td>{{ $Notes->Views }}</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 font-bold">Created Time</td>
-                            <td>{{ $Notes->created_at }}</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-2 font-bold">Last updated</td>
-                            <td>{{ $Notes->updated_at }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div>
-                    {{$Content}}
-                <div>
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="px-4 py-2 border">Creator</th>
+                        <th class="px-4 py-2 border">Subject</th>
+                        <th class="px-4 py-2 border">Views</th>
+                        <th class="px-4 py-2 border">Created Time</th>
+                        <th class="px-4 py-2 border">Last Updated Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="px-4 py-2 border">{{ $Notes['creator']->name }}</td>
+                        <td class="px-4 py-2 border">{{ $Notes['Subject'] }}</td>
+                        <td class="px-4 py-2 border">{{ $Notes['Views'] }}</td>
+                        <td class="px-4 py-2 border">{{ $Notes['created_at'] }}</td>
+                        <td class="px-4 py-2 border">{{ $Notes['updated_at'] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+                
             </div>
         </div>
+        <div class="text-center" style="margin:5%">
+            {{$Content}}
+        <div>
     </div>
 </x-app-layout>

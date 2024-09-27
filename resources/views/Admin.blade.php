@@ -1,64 +1,191 @@
 <x-app-layout>
-<div class="container-fluid px-4">
-        <h2 class="mt-4" style="font-size: 35px;font-weight: 600;">Last Five Weeks' Notes</h1>
-        <canvas id="History_Notes"></canvas>
-        <div class="row">
-            <div class="col-xl-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-area me-1"></i>
-                        Area Chart Example
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
+            @if ($message = Session::get('success'))
+            <div class="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md my-3" role="alert">
+                <div class="flex">
+                    <div>
+                        <p class="text-sm">{{ $message }}</p>
                     </div>
-                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
                 </div>
             </div>
-            <div class="col-xl-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-bar me-1"></i>
-                        Bar Chart Example
+            @endif
+
+            @if ($errors->any())
+            <div class="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md my-3" role="alert">
+                <div class="flex">
+                    <div>
+                        <p class="text-sm">{{ $errors->first() }}</p>
                     </div>
-                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
                 </div>
+            </div>
+            @endif
+        </div>
+        <!-- History_Notes -->
+        <div>
+            <h2 class="mt-4 text-center" style="font-size: 35px;font-weight: 600;">Last Five Months' Notes</h2>
+            <div>
+                <canvas id="History_Notes"></canvas>
             </div>
         </div>
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                Top Doctors
-            <div class="card-body">
-                <table id="datatablesSimple">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Speciality</th>
-                        <th>Room No</th>
-                        <th>Fees</th>
-                        <th>Image</th>
+        <!-- Users -->
+        <div>
+            <h2 class="text-center">Users</h2>
+            <table class="w-full table-fixed">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="px-4 py-2 border">id</th>
+                        <th class="px-4 py-2 border">name</th>
+                        <th class="px-4 py-2 border">email</th>
+                        <th class="px-4 py-2 border">authority</th>
+                        <th class="px-4 py-2 border">created_at</th>
                     </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-            </div>
+                </thead>
+                <tbody>
+                    @if(!empty($Users))
+                        @foreach($Users as $row)
+                            <tr>
+                                <td class="px-4 py-2 border">{{ $row->id }}</td>
+                                <td class="px-4 py-2 border">{{ $row->name }}</td>
+                                <td class="px-4 py-2 border">{{ $row->email }}</td>
+                                <td class="px-4 py-2 border">{{ $row->authority }}</td>
+                                <td class="px-4 py-2 border">{{ $row->created_at }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                    <tr>
+                        <td class="px-4 py-2 border text-red-500" colspan="3">No Notes found.</td>
+                    </tr>
+                    @endif
+                </tbody>
+            </table>
         </div>
-    </div>
-
+        <!-- Notes -->
+        <div>
+            <h2 class="text-center">Notes</h2>
+            <table class="w-full table-fixed">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="px-4 py-2 border">Creator</th>
+                        <th class="px-4 py-2 border">Subject</th>
+                        <th class="px-4 py-2 border">Views</th>
+                        <th class="px-4 py-2 border">Create Time</th>
+                        <th class="px-4 py-2 border">Update Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(!empty($Notes))
+                        @foreach($Notes as $row)
+                            <tr>
+                                <td class="px-4 py-2 border">{{ $row->user_id }}</td>
+                                <td class="px-4 py-2 border">{{ $row->Subject }}</td>
+                                <td class="px-4 py-2 border">{{ $row->Views }}</td>
+                                <td class="px-4 py-2 border">{{ $row->created_at }}</td>
+                                <td class="px-4 py-2 border">{{ $row->updated_at }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                    <tr>
+                        <td class="px-4 py-2 border text-red-500" colspan="3">No Notes found.</td>
+                    </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <!-- Users_History -->
+        <div>
+            <h2 class="text-center">Users_History</h2>
+            <table class="w-full table-fixed">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="px-4 py-2 border">user_id</th>
+                        <th class="px-4 py-2 border">Notes_id</th>
+                        <th class="px-4 py-2 border">Move</th>
+                        <th class="px-4 py-2 border">created_at</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(!empty($Users_History))
+                        @foreach($Users_History as $row)
+                            <tr>
+                                <td class="px-4 py-2 border">{{ $row->user_id }}</td>
+                                <td class="px-4 py-2 border">{{ $row->Notes_id}}</td>
+                                <td class="px-4 py-2 border">{{ $row->Move }}</td>
+                                <td class="px-4 py-2 border">{{ $row->created_at }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                    <tr>
+                        <td class="px-4 py-2 border text-red-500" colspan="3">No Notes found.</td>
+                    </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <!-- Notes_History -->
+        <div>
+            <h2 class="text-center">Notes_History</h2>
+            <table class="w-full table-fixed">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="px-4 py-2 border">id</th>
+                        <th class="px-4 py-2 border">user_id</th>
+                        <th class="px-4 py-2 border">Notes_id</th>
+                        <th class="px-4 py-2 border">Move</th>
+                        <th class="px-4 py-2 border">created_at</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(!empty($Notes_History))
+                        @foreach($Notes_History as $row)
+                            <tr>
+                                <td class="px-4 py-2 border">{{ $row->id }}</td>
+                                <td class="px-4 py-2 border">{{ $row->user_id }}</td>
+                                <td class="px-4 py-2 border">{{ $row->Notes_id}}</td>
+                                <td class="px-4 py-2 border">{{ $row->Move }}</td>
+                                <td class="px-4 py-2 border">{{ $row->created_at }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                    <tr>
+                        <td class="px-4 py-2 border text-red-500" colspan="3">No Notes found.</td>
+                    </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
 <script>
     const chartElement = document.getElementById('History_Notes').getContext("2d");
-    
+
+    const month = ["January","February","March","April","May","June","July","August",
+    "September","October","November","December"];
+    //get the month of now
+    const d = new Date();
+    let Month_4 = month[d.getMonth() - 4];
+    let Month_3 = month[d.getMonth() - 3];
+    let Month_2 = month[d.getMonth() - 2];
+    let Month_1 = month[d.getMonth() - 1];
+    let Month_0 = month[d.getMonth()];
+
+    // Amount of Notes from db
+    var Notes_Amount = @json($Notes_Amount);
+
     new Chart(chartElement, {
     type: 'bar',
     data: {
-        labels: ['第一個', '第二個', '第三個'],
+        labels: [Month_4, Month_3, Month_2, Month_1, Month_0],
         datasets: [{
-            label: '我是種類',
-            data: [1, 10, 5],
+            label: 'Amount',
+            data: Notes_Amount,
         }]
+    },
+    options:{
+        // responsive: true,
+        maintainAspectRatio: false,
+        categoryPercentage: 0.4, // 分類比例
+        barPercentage: 0.2 // 柱狀比例
     }
     });
-</script>
-
+    </script>
+</div>
 </x-app-layout>

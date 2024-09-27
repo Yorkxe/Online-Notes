@@ -1,4 +1,14 @@
 <x-app-layout>
+    @if ($message = Session::get('success'))
+        <div class="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md my-3" role="alert">
+            <div class="flex">
+                <div>
+                    <p class="text-sm">{{ $message }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
     @if ($errors->any())
         <div class="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md my-3" role="alert">
             <div class="flex">

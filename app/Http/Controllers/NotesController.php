@@ -116,31 +116,35 @@ class NotesController extends Controller
             ]);
         }else{
             //because we didn't login, so can't use Auth()->User()            
-            DB::transaction(function () use($id, $Views) {
 
-                DB::table('Notes')->where('Hide', '=', 0)->
-                update([
-                    'Views' => $Views
-                ]);
-                
-                DB::table('Notes_History')->
-                insert([
-                    'user_id' => 0,
-                    'Notes_id' => $id,
-                    'Move' => 'Read'
-                ]);
-    
-                DB::table('User_History')->
-                insert([
-                    'user_id' => '0',
-                    'Move' => 'Read_Notes',
-                    'Notes_id' => $id
-                ]);
-            });
+            DB::table('Notes')->where('Hide', '=', 0)->
+            update([
+                'Views' => $Views
+            ]);
+            
+            DB::table('Notes_History')->
+            insert([
+                'user_id' => 0,
+                'Notes_id' => $id,
+                'Move' => 'Read'
+            ]);
+
+            DB::table('User_History')->
+            insert([
+                'user_id' => '0',
+                'Move' => 'Read_Notes',
+                'Notes_id' => $id
+            ]);
         }
 
         return view('Notes.show', [
-            'Notes' => $Notes,
+            'Notes' => [
+                'creator' => app('App\Models\User')->find($Notes->user_id),
+                'Subject' => $Notes->Subject,
+                'Views' => $Notes->Views,
+                'created_at' => $Notes->created_at,
+                'updated_at' => $Notes->updated_at,
+            ],
             'Content' => $Content
         ]);
     }
