@@ -47,13 +47,13 @@ Before starting, you should do the following steps.
 <h2>Straightforward UI</h2>
 
 <strong>Login</strong>
-![Login](https://hackmd.io/_uploads/SJZKWFF0R.png)
+<img src="https://github.com/Yorkxe/Online-Notes/blob/Framework_V1.0/README_Image/Login.png">
 
 <strong>Notes_list</strong>
-![Notes](https://hackmd.io/_uploads/SJVQfFF0R.png)
+<img src="https://github.com/Yorkxe/Online-Notes/blob/Framework_V1.0/README_Image/Notes.png">
 
 <strong>Create_Notes</strong>
-![Create_Notes](https://hackmd.io/_uploads/HkWLzYKRR.png)
+<img src="https://github.com/Yorkxe/Online-Notes/blob/Framework_V1.0/README_Image/Create_Notes.png">
 
 There are 3 levels of authority.
 * 1: Admin - Authority to watch the data for all users、Notes、users_History、Notes_History.
@@ -65,7 +65,7 @@ With the authority system, it's needlessly to worry your own Notes edited or del
 
 With the Admin authority, you can manage all the users' data and watch the trend for users' and Notes' History.
 
-![Admin](https://hackmd.io/_uploads/S1QdVKYR0.png)
+<img src="https://github.com/Yorkxe/Online-Notes/blob/Framework_V1.0/README_Image/Admin.png">
 
 On the top is the Last Five Month's Notes, it uses the chart.js to show this data - https://www.chartjs.org/.
 With this you can understand which month is the most versatile for creating knowledge.
