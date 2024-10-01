@@ -20,7 +20,9 @@
     @endif
     <div>
         <div style="display: inline-block; margin-top: 5%; margin-left: 20%; margin-right: 5%">
-            <img src="{{$profile->Image}}">
+        <img src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
+            style="width: 40%; height: 40%">
+        <!-- storage\app\public\Profiles\{{$profile->Image}} -->
         </div>
         <div style="display: inline-block; vertical-align: top; margin-top: 5.5%" id="app" class="app">
             <div style="display:flex; justify-content: space-between; align-items: baseline">
@@ -43,7 +45,7 @@
         @foreach($profile->user->Notes as $image)
             <div style="display: inline-block; padding: 1%;">
                 <a href="/p/{{$image->id}}">
-                    <img src="/storage/{{$image->URL}}">
+                    <img src="/storage/app/public/{{$image->Image}}">
                 </a>
             </div>         
         @endforeach
