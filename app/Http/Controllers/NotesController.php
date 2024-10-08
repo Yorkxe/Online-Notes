@@ -95,13 +95,14 @@ class NotesController extends Controller
         $id = $Notes->id;
         $Views = $Notes->Views;
         $Views++;
-
+        // dd($Views);
         $path = 'C:\xampp\htdocs\Online-Notes\storage\app\public\Notes\\'.$id.'.txt';
         //fopen is a resources type, can't pass to view
         $Content = file_get_contents($path);
 
         if((Auth()->User()) != null){
-            Auth()->User()->Notes()->where('id', '=', $id)->update([
+            DB::table('Notes')->where('id', '=', $id)->
+            update([
                 'Views' => $Views
             ]);
 
@@ -117,7 +118,7 @@ class NotesController extends Controller
         }else{
             //because we didn't login, so can't use Auth()->User()            
 
-            DB::table('Notes')->where('Hide', '=', 0)->
+            DB::table('Notes')->where('id', '=', $id)->
             update([
                 'Views' => $Views
             ]);

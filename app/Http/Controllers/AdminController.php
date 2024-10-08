@@ -26,7 +26,7 @@ class AdminController extends Controller
                 'Users',
                 'Users_History',
                 'Notes_History',
-                ]))->with('success' ,'Welcome to Admin-Page!!');
+                ]))->with('success', 'Welcome to Admin-Page!!');
         }
     }
 

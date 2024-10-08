@@ -61,6 +61,14 @@ return [
             'throw' => false,
         ],
 
+        'public/Profiles' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/Profiles'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
 
         's3' => [
             'driver' => 's3',
