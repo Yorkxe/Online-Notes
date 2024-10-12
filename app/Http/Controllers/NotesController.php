@@ -10,8 +10,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class NotesController extends Controller
+class NotesController extends \Illuminate\Routing\Controller
 {   
+    //You can watch the Notes list and individual Notes without login
+    public function __construct(){
+        $this->middleware('auth')->except('index', 'show');
+    }
+    
     //constraint the store, update, edit, create, destroy method should be logged in to use
     
     /**

@@ -33,7 +33,9 @@ new #[Layout('layouts.guest')] class extends Component
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form wire:submit="login">
+    <form wire:submit="login" method="POST">
+    <!-- <form action="login" method="POST"> -->
+        @csrf
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
@@ -43,14 +45,29 @@ new #[Layout('layouts.guest')] class extends Component
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <script>
+                function ShowPassword() {
+                    var x = document.getElementById("password");
+                    if (x.type === "password") {
+                        x.type = "text";
+                    }else{
+                        x.type = "password";
+                    }
+                }            
+            </script>
 
+            <x-input-label for="password" :value="__('Password')" />
             <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
                             type="password"
                             name="password"
-                            required autocomplete="current-password" />
+                            required autocomplete="current-password"
+                            style="margin-bottom:5%" />
 
             <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
+            <label for="show" class="inline-flex items-center">
+                <input id="show" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="show" onclick="ShowPassword()">
+                <span class="ms-2 text-sm text-gray-600">{{ __('Show Password') }}</span>
+            </label>
         </div>
 
         <!-- Remember Me -->

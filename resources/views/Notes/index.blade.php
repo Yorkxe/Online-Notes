@@ -2,32 +2,34 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
-                @if(Auth::User()->authority < 3)
-                <a href="{{ route('Notes.create') }}"
-                   class="inline-flex items-center px-4 py-2 mb-4 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 active:bg-green-700 focus:outline-none focus:border-green-700 focus:shadow-outline-gray disabled:opacity-25">
-                   Create a New Note
-                </a>
-                @endif
+                @auth
+                    @if(Auth::User()->authority < 3)
+                    <a href="{{ route('Notes.create') }}"
+                    class="inline-flex items-center px-4 py-2 mb-4 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 active:bg-green-700 focus:outline-none focus:border-green-700 focus:shadow-outline-gray disabled:opacity-25">
+                    Create a New Note
+                    </a>
+                    @endif
 
-                @if ($message = Session::get('success'))
-                <div class="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md my-3" role="alert">
-                    <div class="flex">
-                        <div>
-                            <p class="text-sm">{{ $message }}</p>
+                    @if ($message = Session::get('success'))
+                    <div class="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md my-3" role="alert">
+                        <div class="flex">
+                            <div>
+                                <p class="text-sm">{{ $message }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @endif
+                    @endif
 
-                @if ($errors->any())
-                <div class="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md my-3" role="alert">
-                    <div class="flex">
-                        <div>
-                            <p class="text-sm">{{ $errors->first() }}</p>
+                    @if ($errors->any())
+                    <div class="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md my-3" role="alert">
+                        <div class="flex">
+                            <div>
+                                <p class="text-sm">{{ $errors->first() }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @endif
+                    @endif
+                @endauth
 
                 <table class="w-full table-fixed">
                     <thead>
@@ -52,7 +54,7 @@
                                     <td class="px-4 py-2 border">
                                         <form action="{{ route('Notes.destroy', $row->id) }}" method="POST">
                                             <a href="{{ route('Notes.show', $row->id) }}" class="inline-flex items-center px-4 py-2 mx-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25">
-                                                Show
+                                                Read
                                             </a>
                                             @if($row->user == Auth::User())
                                             <a href="{{ route('Notes.edit', $row->id) }}" class="inline-flex items-center px-4 py-2 mx-2 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-800 border border-transparent rounded-md hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25">
