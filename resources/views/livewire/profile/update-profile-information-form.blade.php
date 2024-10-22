@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Livewire\Volt\Component;
 use Livewire\WithFileUploads;
+use Intervention\Image\ImageManager;
 
 new class extends Component
 {
@@ -58,12 +59,18 @@ new class extends Component
         $user->save();
 
         if(!is_null($this->Image)){
+            $filename_Image = $user->id.'_'.date("Ymd", time()).'.jpg'
+            $this->Image->storeAs(path:'public\Profiles', name: $filename_Image);
+
+            $Image = $manager->read('storage/app/public/Profiles/'.$filename_Image);
+            $Image->resize(300, 400);
+            $Image->save();
+            
             Auth()->User()->Profile()->update([
                 'Description' => $info_Profile['Description'],
                 'Image' => $user->id.'_'.date("Ymd", time()).'.jpg'
             ]);
 
-            $this->Image->storeAs(path:'public\Profiles', name: $user->id.'_'.date("Ymd", time()).'.jpg');    
         }else{
             Auth()->User()->Profile()->update([
                 'Description' => $info_Profile['Description'],

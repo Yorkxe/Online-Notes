@@ -20,7 +20,7 @@
     @endif
     <div>
         <div style="display: inline-block; margin-top: 5%; margin-left: 20%; margin-right: 5%">
-        <img src="public\Profiles\{{$profile->Image}}">
+            <img alt="" src="\Profiles\{{$profile->Image}}">
         </div>
         <div style="display: inline-block; vertical-align: top; margin-top: 5.5%" id="app" class="app">
             <div style="display:flex; justify-content: space-between; align-items: baseline">
@@ -40,10 +40,10 @@
         </div>
     </div>
     <div style="text-align: center">
-        @foreach($profile->user->Notes as $image)
+        @foreach($profile->user->Notes->where('Hide', '=', '0') as $image)
             <div style="display: inline-block; padding: 1%;">
-                <a href="/p/{{$image->id}}">
-                    <img src="/storage/app/public/{{$image->Image}}">
+                <a href="/Notes/{{$image->id}}">
+                    <img src="/storage/{{$image->Image}}">
                 </a>
             </div>         
         @endforeach

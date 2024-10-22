@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class NotesController extends \Illuminate\Routing\Controller
 {   
@@ -59,19 +61,28 @@ class NotesController extends \Illuminate\Routing\Controller
 
         //store the txt file and Notes_Image into public
         Storage::disk('public/Notes')->put($filename, $data['Content']);
+        // isset($data['Image'])
+        if($request->has('Image')){
+            $imagePath = request('Image')->store('Notes_Image', 'public');
 
-        if(isset($data['Image'])){
-            $Image = request('Image')->store('Notes_Image', 'public');
+            $manager = new ImageManager(new Driver());
+    
+            // read image from file system
+            $Image = $manager->read('storage/'.$imagePath);
+            $Image->resize(300, 400);
+    
+            // save modified image in new format 
+            $Image->save();
 
             Auth()->User()->Notes()->create([
                 'Subject' => $data['Subject'],
-                'Image' => $Image
+                'Image' => $imagePath
             ]);
         }else{
             Auth()->User()->Notes()->create([
                 'Subject' => $data['Subject'],
                 //if the user didn't import a image, take the default.png
-                'Image' => 'default.png'
+                'Image' => 'Notes_Image/default.jpg'
             ]);
 
         }
@@ -230,8 +241,7 @@ class NotesController extends \Illuminate\Routing\Controller
     {
         $Notes = Notes::find($Notes);
         $id  = $Notes->id;
-
-        if(Auth::User() != $Notes->user_id){
+        if(Auth::User()->id != $Notes->user_id){
             return redirect()->route('Notes.index',
             ['Notes' =>Notes::latest()->where('Hide', '=', 0)->paginate(10)])
             ->withErrors(['error' => 'You have no access to delete other\'s Notes']);
