@@ -25,7 +25,7 @@ new class extends Component
     {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
-        $this->Description = Auth()->User()->Profile->Description;
+        $this->Description = Auth()->user()->Profiles->Description;
     }
 
     /**
@@ -39,17 +39,6 @@ new class extends Component
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
         ]);
 
-        if(!is_null($this->Image)){
-            $info_Profile = $this->validate([
-                'Description' => ['string', 'max:255'],
-                'Image' => ['image', 'mimes:jpeg,jpg,png,gif', 'max:1024'],
-            ]);
-        }else{
-            $info_Profile = $this->validate([
-                'Description' => ['string', 'max:255'],
-            ]);
-        }
-
         $user->fill($info_user);
 
         if ($user->isDirty('email')) {
@@ -59,7 +48,12 @@ new class extends Component
         $user->save();
 
         if(!is_null($this->Image)){
-            $filename_Image = $user->id.'_'.date("Ymd", time()).'.jpg'
+            $info_Profile = $this->validate([
+                'Description' => ['string', 'max:255'],
+                'Image' => ['image', 'mimes:jpeg,jpg,png,gif', 'max:1024'],
+            ]);
+
+            $filename_Image = $user->id.'_'.date("Ymd", time()).'.jpg';
             $this->Image->storeAs(path:'public\Profiles', name: $filename_Image);
 
             $Image = $manager->read('storage/app/public/Profiles/'.$filename_Image);
@@ -70,8 +64,11 @@ new class extends Component
                 'Description' => $info_Profile['Description'],
                 'Image' => $user->id.'_'.date("Ymd", time()).'.jpg'
             ]);
-
         }else{
+            $info_Profile = $this->validate([
+                'Description' => ['string', 'max:255'],
+            ]);
+
             Auth()->User()->Profile()->update([
                 'Description' => $info_Profile['Description'],
             ]);    

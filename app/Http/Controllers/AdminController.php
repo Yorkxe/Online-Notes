@@ -81,14 +81,14 @@ class AdminController extends Controller
     }
 
     public function getdata_Users_History(){
-        $Users_History = DB::table('user_History')->orderBy('created_at', 'desc')->paginate(5);
+        $Users_History = DB::table('User_History')->orderBy('created_at', 'desc')->paginate(5);
 
         return $Users_History;
     }
 
     public function getdata_Notes_History(){
-        $Users_History = DB::table('notes_History')->orderBy('created_at', 'desc')->paginate(5);
-
+        $Users_History = DB::table('Notes_History')->orderBy('created_at', 'desc')->paginate(5);
+        
         return $Users_History;
     }
 

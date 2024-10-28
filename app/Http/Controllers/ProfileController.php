@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Profile;
+use App\Models\Profiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,7 +11,7 @@ class ProfileController extends Controller
 {
     public function show($user){
 
-        $Profile = Profile::findOrFail($user);
+        $Profile = Profiles::findOrFail($user);
 
         return view('Profile.show', [
             'profile' => $Profile,

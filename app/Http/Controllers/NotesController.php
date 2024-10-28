@@ -66,9 +66,9 @@ class NotesController extends \Illuminate\Routing\Controller
             $imagePath = request('Image')->store('Notes_Image', 'public');
 
             $manager = new ImageManager(new Driver());
-    
+            // dd('/storage/app/public/'.$imagePath);
             // read image from file system
-            $Image = $manager->read('storage/'.$imagePath);
+            $Image = $manager->read('/var/www/Online-Notes/storage/app/public/'.$imagePath);
             $Image->resize(300, 400);
     
             // save modified image in new format 

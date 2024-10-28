@@ -59,19 +59,19 @@ class User extends Authenticatable
         return $this->hasMany(Notes_History::class)->orderBy('created_at', 'DESC');
     }
 
+    public function Profiles(){
+        return $this->hasOne(Profiles::class);
+    }
+
     //When creating a new user, the Profile model will be created simultaneously
     protected static function boot(){
         parent::boot();
 
         static::created(function (User $user){
-            $user->Profile()->create([
+            $user->Profiles()->create([
                 'Description' => 'Write sth you want to tell everyone',
                 'Image' => 'default.png'
             ]); 
         });
-    }
-
-    public function Profile(){
-        return $this->hasOne(Profile::class);
     }
 }

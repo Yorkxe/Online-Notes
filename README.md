@@ -1,6 +1,16 @@
-<h1>About Online-Notes Framework_V1.0</h1>
+<h1>About Online-Notes Framework_V2.0</h1>
+<h1>What's new in Version2.0</h1>
+<h2>More convenient</h2>
+Using package from Laravel - Sanctum, now you can login with your Google account without registering!
+<h2>More safety</h2>
+The login page is tested with common SQL magic commands.
+So it's no worry that somebody using illegal password to create Notes or go to Admin page to steal user's info.
 
----
+If you want to see the picture of testing for SQL Injection, you can go to https://github.com/Yorkxe/Online-Notes/Framwork_V2.0/README_IMAGE/SQL_Injection.
+The url in Online-Notes is tested with Postman.
+So it's no necessary that others would edit/delete your hard works, or furthermore go into Admin page to steal all users' info.
+All test images from postman are in https://github.com/Yorkxe/Online-Notes/Framwork_V2.0/README_IMAGE/Postman_Test.
+<hr>
 
 This is my personal side-project about personal note system.
 And it's running on the AMP(Apache、MySQL、PHP), looks similar with the last Online-Notes.
@@ -47,13 +57,13 @@ Before starting, you should do the following steps.
 <h2>Straightforward UI</h2>
 
 <strong>Login</strong>
-![Login](https://hackmd.io/_uploads/SJZKWFF0R.png)
+<img src="README_IMAGE/Login.png">
 
 <strong>Notes_list</strong>
-![Notes](https://hackmd.io/_uploads/SJVQfFF0R.png)
+<img src="README_IMAGE/Notes.png">
 
 <strong>Create_Notes</strong>
-![Create_Notes](https://hackmd.io/_uploads/HkWLzYKRR.png)
+<img src="README_IMAGE/Create_Notes.png">
 
 There are 3 levels of authority.
 * 1: Admin - Authority to watch the data for all users、Notes、users_History、Notes_History.
@@ -65,7 +75,7 @@ With the authority system, it's needlessly to worry your own Notes edited or del
 
 With the Admin authority, you can manage all the users' data and watch the trend for users' and Notes' History.
 
-![Admin](https://hackmd.io/_uploads/S1QdVKYR0.png)
+<img src="README_IMAGE/Admin.png">
 
 On the top is the Last Five Month's Notes, it uses the chart.js to show this data - https://www.chartjs.org/.
 With this you can understand which month is the most versatile for creating knowledge.

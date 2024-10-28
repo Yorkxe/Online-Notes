@@ -43,7 +43,7 @@
         @foreach($profile->user->Notes->where('Hide', '=', '0') as $image)
             <div style="display: inline-block; padding: 1%;">
                 <a href="/Notes/{{$image->id}}">
-                    <img src="/storage/{{$image->Image}}">
+                    <img src="/var/www/Online-Notes/storage/app/public/{{ $image->Image}}">
                 </a>
             </div>         
         @endforeach
