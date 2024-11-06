@@ -1,0 +1,13 @@
+name: CI/CD
+on:
+  push:
+    branches:
+    - Framework_V3.0
+jobs:
+  tests:
+    runs-on: Ubuntu 24.04.1
+    steps:
+    - uses: actions/checkout@v4
+    - name: tests
+      run: php artisan test
+          
